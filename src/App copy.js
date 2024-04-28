@@ -6,16 +6,30 @@ import Search from "./component/Search";
 import Header from "./component/Header";
 
 export default function App() {
-  const [nodeList, setNodeList] = useState(() => {
-    const storedNodeList = localStorage.getItem("nodeList");
-    return storedNodeList ? JSON.parse(storedNodeList) : [];
-  });
+  const [nodeList, setNodeList] = useState([
+    {
+      id: uuid(),
+      header: "What is your program for today?",
+      date: "22 / 10 / 2023",
+    },
+    // {
+    //   id: uuid(),
+    //   header: "Today I will go singing class.",
+    //   date: "23 / 10 / 2023",
+    // },
+    // {
+    //   id: uuid(),
+    //   header: "I eat mango",
+    //   date: "24 / 10 / 2023",
+    // },
+    // {
+    //   id: uuid(),
+    //   header: "Honesty is the best policy.",
+    //   date: "25 / 10 / 2023",
+    // },
+  ]);
   const [searchText, setSearchText] = useState("");
   const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem("nodeList", JSON.stringify(nodeList));
-  }, [nodeList]);
 
   function handleNodeList(text) {
     const date = new Date();
@@ -31,7 +45,6 @@ export default function App() {
     const filteredNode = nodeList.filter((node) => node.id !== id);
     setNodeList(filteredNode);
   }
-
   function handleSearchText(text) {
     setSearchText(text);
   }
@@ -39,7 +52,6 @@ export default function App() {
   function handleDarkMode() {
     setDarkMode((darkMode) => !darkMode);
   }
-
   return (
     <div className={darkMode ? "container dark-mode" : "container"}>
       <Header onToggelDarkMode={handleDarkMode} darkMode={darkMode} />
@@ -48,7 +60,7 @@ export default function App() {
         onNodeList={handleNodeList}
         onDeleteNode={handelDeleteNode}
         nodeList={nodeList.filter((note) =>
-          note.header.toLowerCase().includes(searchText.toLowerCase())
+          note.header.toLowerCase().includes(searchText)
         )}
       />
     </div>
